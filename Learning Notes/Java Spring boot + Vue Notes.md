@@ -200,4 +200,245 @@
 
   - ![image-20210325112641891](C:\Users\fengchuiyusan\AppData\Roaming\Typora\typora-user-images\image-20210325112641891.png)
 
+- **v-once 指令的使用**
+
+  - 该指令表示元素和组件只渲染一次,不会随着数据的改变而改变
+
+  - v-once后面不用跟任何的东西
+
+  - ```vue
+    <template>
+      <div>
+        <table>
+          <tr>
+              <!--不论test怎么改变,其一定会只显示初值-->
+            <td v-once>这就是:{{test}}</td>
+          </tr>
+        </table>
+      </div>
+    </template>
+    
+    <script>
+    export default {
+      name: "Test",
+      data(){
+        return{
+          test : "mustache语法",
+        }
+      }
+    }
+    
+    </script>
+    
+    <style scoped>
+    
+    </style>
+    ```
+
+- **v-html 指令的使用**
+
+  - 该指令后面往往会跟上一个string类型
+
+  - 会将string的html解析出来并且进行渲染
+
+  - ```vue
+    <template>
+      <div>
+        <table>
+          <tr>
+              <!--显示一个叫做百度一下的超链接-->
+            <td v-html = "test"></td>
+          </tr>
+        </table>
+      </div>
+    </template>
+    
+    <script>
+    export default {
+      name: "Test",
+      data(){
+        return{
+          test : '<a href="http://www.baidu,com">百度一下</a>',
+        }
+      }
+    }
+    
+    </script>
+    
+    <style scoped>
+    
+    </style>
+    ```
+
+- **v-pre 指令的使用**
+
+  - 可以避免解析里面的内容
+
+  - ```vue
+    <template>
+      <div>
+        <table>
+          <tr>
+    <!--        显示{{test}}而不是齐宝-->
+            <td v-pre>{{test}}</td>
+          </tr>
+        </table>
+      </div>
+    </template>
+    
+    <script>
+    export default {
+      name: "Test",
+      data(){
+        return{
+          test : "齐宝",
+        }
+      }
+    }
+    
+    </script>
+    
+    <style scoped>
+    
+    </style>
+    ```
+
+- **v-cloak 指令的使用**
+
+  - 在vue解析前,div中有一个叫v-cloak的属性,而解析之后,该属性会被删除
+
+  - 当有该属性时,就可以在该属性里进行一些操作,比如不显示
+
+  - ```vue
+    <template>
+      <div>
+        <table>
+          <tr>
+            <td>{{test}}</td>
+          </tr>
+        </table>
+      </div>
+    </template>
+    
+    <script>
+        //该指令用的很少
+    export default {
+      name: "Test",
+      data(){
+        return{
+          test : "齐宝",
+        }
+      }
+    }
+    
+    </script>
+    
+    <style scoped>
+    [v-cloack]{
+      display: none;
+    }
+    </style>
+    ```
+
+---
+
+#### 绑定属性
+
+- 我们希望某些属性也可以动态来绑定
+  - 比如动态绑定某元素的 src 属性
+  - 比如动态绑定某元素的href属性
+
+
+
+- **v-bind 指令属性**
+
+  - 基本的使用如下,一般都用语法糖写法
+
+  - 同样可以动态绑定一个标签的class属性
+
+  - ```vue
+    <template>
+      <div>
+        <table>
+          <tr>
+    <!--        只有内容部分才能用mustache语法,标签里不能用-->
+    <!--        此时src和href属性就是一个动态的变量属性,会去data里寻找imageURL和URL这个变量-->
+            <img v-bind:src="imageURL">
+            <a v-bind:href="URL">中南大学</a>
+    <!--        如果使用语法糖,可以将v-bind给省略掉,以下和第一行是等价的-->
+            <img :src="imageURL">
+          </tr>
+        </table>
+      </div>
+    </template>
+    
+    <script>
+    export default {
+      name: "Test",
+      data(){
+        return{
+          imageURL : "http://www.csu.edu.cn/__local/1/59/14/9A25F96298EABF2207A28817B02_46044D40_19FF6E.jpg",
+          URL : "http://www.csu.edu.cn",
+        }
+      }
+    }
+    
+    </script>
+    
+    <style scoped>
+    </style>
+    ```
+
+  - v-bind动态绑定class(对象语法)
+
+  - ```vue
+    <template>
+      <div>
+        <table>
+          <tr>
+    <!--        一般在该td中,一直会存在不会更改的class就写成死的,不用v-bind处理-->
+    <!--        如果是会改变(即存在或者不存在的class),就会用键值对的形式:-->
+    <!--        :class = "{类名 : boolean,类名 : boolean}"来处理,当boolean值为true时,就会渲染该类-->
+            <td class = "title" :class = "{red : isRed,line : isLine}">{{message}}</td>
+    <!--        利用一个按钮来实现red类的存在与不存在-->
+            <button v-on:click = "changeColor">变色</button>
+          </tr>
+        </table>
+      </div>
+    </template>
+    
+    <script>
+    export default {
+      name: "Test",
+      data(){
+        return{
+          message : "齐宝",
+          isRed : false,
+          isLine: true,
+        }
+      },
+      //改变颜色的方法
+      methods:{
+        changeColor : function(){
+          this.isRed = !this.isRed;
+        }
+      }
+    }
+    
+    </script>
+    
+    <style scoped>
+    .red{
+      color: red;
+    }
+    .title{
+      size: 10px;
+    }
+    .line{
+      background: aquamarine;
+    }
+    </style>
+    ```
+
   - 
+
