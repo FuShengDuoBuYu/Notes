@@ -34,14 +34,170 @@
 
 ### 内容一	邂逅 vue.js
 
-- 为什么要学习vue.js 
+- **为什么要学习vue.js** 
   - vuejs目前非常火,前端对 vuejs 的要求是刚性的
   - 项目是需要使用 vuejs 的
 - Vue 是一个渐进式的框架,是一个响应式的语言
-- Vue 展示列表数据(也即循环)
+- Vue 展示列表数据(也即循环),并且它是响应式的
 
 ```vue
 <tr v-for="item in 数组名">
   <td>{{数组名.数组元素}} </td>
 </tr>
 ```
+
+- **计数器的实现**
+
+  - 新的指令: **@click**,等价于*v-on:click*语法糖该指令用于监听某个元素的点击事件,并且当点击时一般都会执行**methods**中的方法,语法是**v-on**
+  - 新的属性:**methods**,该属性用在vue中定义**方法**
+
+  ```vue
+  <template>
+    <div>
+      <table>
+        <tr>
+  <!--        显示器-->
+          <td>当前计数: {{counter}}</td>
+        </tr>
+        <tr>
+  <!--        按钮-->
+          <button v-on:click="plus">+</button>
+          <button v-on:click="minus">-</button>
+        </tr>
+      </table>
+    </div>
+  </template>
+  
+  <script>
+  export default {
+    name: "Test",
+    // 定义方法
+    methods:{
+      plus : function(){
+        // 此处不再是this.data.数据
+        this.counter++;
+      },
+      minus : function (){
+        this.counter--;
+      }
+    },
+    // 定义数据
+    data(){
+      return{
+        counter : 0,
+      }
+    }
+  }
+  
+  </script>
+  
+  <style scoped>
+  
+  </style>
+  
+  ```
+
+- **Vue中的MVVM**(Model-View-ViewModel)
+
+  - [MVVM的详解](https://baike.baidu.com/item/MVVM/96310?fr=aladdin)
+
+  - 计数器里的MVVM
+
+    > **view :** 
+    >
+    > <template>
+    >
+    >   <div>
+    >     <table>
+    >       <tr>
+    > <!--        显示器-->
+    >         <td>当前计数: {{counter}}</td>
+    >       </tr>
+    >       <tr>
+    > <!--        按钮-->
+    >         <button v-on:click="plus">+</button>
+    >         <button v-on:click="minus">-</button>
+    >       </tr>
+    >     </table>
+    >   </div>
+    > </template>
+    >
+    >  
+    >
+    > **model :**
+    >
+    >  // 定义数据
+    >   data(){
+    >     return{
+    >       counter : 0,
+    >     }
+    >   }
+    > }
+    >
+    >  
+    >
+    > **ViewModel :** 
+    >
+    > export default {
+    >   name: "Test",
+    >   // 定义方法
+
+- **创建vue对象时的options**
+  - el
+    - 类型: string | HTMLElement
+    - 作用: 决定之后Vue实例会管理哪个DOM
+  - data
+    - 类型 : Object | function(组件中data必须是函数)
+    - 作用: Vue实例对应的数据对象
+  - methods
+    - 类型: {[key: string] : Function}
+    - 作用: 定义属于Vue的一些方法,可以在其他地方调用,也可以在指令中使用
+    - 注:在前端开发中,类里的叫方法(function)和实例对象挂钩,函数(methods)
+  - 生命周期函数
+- **vue的生命周期**
+  - 我们new出的Vue对象时,其内部进行了一系列操作,如果在new vue时写了一些生命周期函数,那就可以起到回调的效果
+  - ![Vue 实例生命周期](https://cn.vuejs.org/images/lifecycle.png)
+
+---
+
+
+
+### 内容二   vue的基本语法
+
+---
+
+#### 插值操作
+
+- 将data数据插入到html中只需要使用 **Mustache 语法(即双大括号),**此时数据是响应式的
+
+  - ```vue
+    <template>
+      <div>
+        <table>
+          <tr>
+            <td>这就是:{{test}}</td>
+          </tr>
+        </table>
+      </div>
+    </template>
+    
+    <script>
+    export default {
+      name: "Test",
+      data(){
+        return{
+          test : "mustache语法",
+        }
+      }
+    }
+    
+    </script>
+    
+    <style scoped>
+    
+    </style>
+    ```
+
+  - ![image-20210325112641891](C:\Users\fengchuiyusan\AppData\Roaming\Typora\typora-user-images\image-20210325112641891.png)
+
+  - 
